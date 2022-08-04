@@ -1,15 +1,47 @@
 import styled from 'styled-components';
 import logo from "../assets/images/logo.png";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useState, useContext } from 'react';
+import "../contexts/UserContext";
+import UserContext from '../contexts/UserContext';
 
 export default function LoginPage(){
+    const {email, setEmail, password, setPassword, image, setImage} = useContext(UserContext);
+    let userToken = '';
+    let userImage = '';
+
+    const [isAble, setIsAble] = useState('');
+    const navigate = useNavigate();
+    let loginData = {
+        email,
+        password
+    }
+
+    function handleForm(e){
+        e.preventDefault();
+        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', loginData);
+        promise.then(res => {
+            userImage = res.data.image;
+            setImage(userImage);
+            localStorage.setItem('userToken', res.data.token);
+            userToken = localStorage.getItem('userToken');
+            navigate('/hoje');
+            setEmail('');
+            setPassword(''); 
+        })
+
+        promise.catch(res => {
+            alert('Faça o login novamente')
+        })
+    }
 
     return (
         <Container>
             <Image src={logo} />
-            <Form>
-                <Input placeholder='email' type='email' name='email' required/>
-                <Input placeholder='senha' type='password' name='password' required/>
+            <Form onSubmit={handleForm}>
+                <Input placeholder='email' type='email' name='email' required onChange={(e) => setEmail(e.target.value)} value={email}/>
+                <Input placeholder='senha' type='password' name='password' required onChange={(e) => setPassword(e.target.value)} value={password}/>
                 <Button>Entrar</Button>
             </Form>
             <Link to='/cadastro'>
@@ -21,11 +53,12 @@ export default function LoginPage(){
 
 const Container = styled.div`
     width: 100%;
-    margin-top: 68px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #ffffff;
+    height: 100vh;
 `
 
 const Image = styled.img`

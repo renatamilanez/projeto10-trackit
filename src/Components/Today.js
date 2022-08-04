@@ -1,11 +1,9 @@
 import styled from 'styled-components';
 import Habit from './Habit';
-import Header from './Header';
 
 export default function Today(){
     return (
         <>
-            <Header />
             <Container>
                 <Date>
                     <Title>Segunda, 17/05</Title>

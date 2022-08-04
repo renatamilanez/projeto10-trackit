@@ -1,16 +1,46 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from "../assets/images/logo.png";
+import axios from 'axios';
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
 
 export default function SignIn(){
+    const {email, setEmail, password, setPassword, name, setName, image, setImage} = useContext(UserContext);
+    
+    const navigate = useNavigate();
+    let signData = {
+        email,
+        password,
+        name,
+        image  
+      }
+
+    function handleForm(e){
+        console.log(signData);
+        e.preventDefault();
+        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', signData);
+        promise.then(res =>{
+            navigate('/');
+            setEmail('');
+            setPassword('');
+            setName('');
+            setImage('');
+        })
+        promise.catch(res =>{
+            alert('Faça o cadastro novamente')
+        })
+    };
+
     return (
         <Container>
             <Image src={logo} />
-            <Form>
-                <Input placeholder='email' type='email' name='email' required/>
-                <Input placeholder='senha' type='password' name='password' required/>
-                <Input placeholder='nome' type='text' name='name' required/>
-                <Input placeholder='foto' type='url' required/>
+            <Form onSubmit={handleForm}>
+                <Input placeholder='email' type='email' name='email' required onChange={(e) => setEmail(e.target.value)} value={email}/>
+                <Input placeholder='senha' type='password' name='password' required onChange={(e) => setPassword(e.target.value)} value={password}/>
+                <Input placeholder='nome' type='text' name='name' required onChange={(e) => setName(e.target.value)} value={name}/>
+                <Input placeholder='foto' type='url' required onChange={(e) => setImage(e.target.value)} value={image}/>
+
                 <Button>Cadastrar</Button>
             </Form>
             <Link to='/'>
@@ -22,11 +52,12 @@ export default function SignIn(){
 
 const Container = styled.div`
     width: 100%;
-    margin-top: 68px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #ffffff;
+    height: 100vh;
 `
 
 const Image = styled.img`

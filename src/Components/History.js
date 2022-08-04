@@ -1,10 +1,8 @@
 import styled from 'styled-components';
-import Header from './Header';
 
 export default function History(){
     return (
         <>
-        <Header />
         <Container>
             <Title>Histórico</Title>
             <Subtitle>Em breve você poderá ver o histórico dos seus hábitos aqui!</Subtitle>

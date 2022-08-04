@@ -1,12 +1,9 @@
 import styled from 'styled-components';
-import Footer from './Footer';
-import Header from './Header';
 import NewHabit from './NewHabit';
 
 export default function Habits(){
     return(
         <>
-            <Header />
             <Container>
                 <Head>
                     <Title>Meus hábitos</Title>
@@ -15,7 +12,6 @@ export default function Habits(){
                 <NewHabit />
                 <Text>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</Text>
             </Container>
-            <Footer />
         </>
     )
 }
