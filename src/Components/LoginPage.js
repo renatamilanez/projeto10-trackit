@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import logo from "../assets/images/logo.png";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import "../contexts/UserContext";
 import UserContext from '../contexts/UserContext';
 
@@ -11,7 +11,6 @@ export default function LoginPage(){
     let userToken = '';
     let userImage = '';
 
-    const [isAble, setIsAble] = useState('');
     const navigate = useNavigate();
     let loginData = {
         email,

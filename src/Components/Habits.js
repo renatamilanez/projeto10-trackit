@@ -1,16 +1,33 @@
 import styled from 'styled-components';
-import NewHabit from './NewHabit';
+import {useEffect } from 'react';
+import OpenHabit from './OpenHabit';
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
+import axios from 'axios';
+import ClosedHabit from './ClosedHabit';
+import RenderList from './RenderList';
 
 export default function Habits(){
+    const {config, addButton, setAddButton, listHabits, setListHabits, setReloadHabits} = useContext(UserContext);
+
+    useEffect(() => {
+        const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config);
+        promise.then(res => {
+            setListHabits(res.data);
+        })
+    }, []);
+
     return(
         <>
             <Container>
                 <Head>
                     <Title>Meus hábitos</Title>
-                    <AddHabit>+</AddHabit>
+                    <AddHabit onClick={() => setAddButton(!addButton)}>+</AddHabit>
                 </Head>
-                <NewHabit />
-                <Text>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</Text>
+                {addButton === true ? <OpenHabit /> : null}
+                {listHabits === null || listHabits.length === 0 ? (
+                    <Text>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</Text>
+                    ) : <RenderList />}
             </Container>
         </>
     )
@@ -63,4 +80,3 @@ const Text = styled.p`
     font-size: 18px;
     font-weight: 400;
 `
-

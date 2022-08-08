@@ -1,13 +1,26 @@
 import styled from 'styled-components';
 import WeeklyButtons from './WeeklyButtons';
-import trash from '../assets/images/trash.svg'
+import trash from '../assets/images/trash.svg';
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
+import axios from 'axios';
 
-export default function ClosedHabit(){
+export default function ClosedHabit({item}){
+    const {config, setListHabits} = useContext(UserContext);
+
+    function removeTask(item){
+        console.log(item.id);
+        const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${item.id}`, config);
+        promise.then(res => {
+            setListHabits(res.data);
+        })
+    }
+
     return(
         <Container>
-            <Title>Ler 1 capítulo de livro</Title>
+            <Title>{item.name}</Title>
             <WeeklyButtons />
-            <Delete src={trash}></Delete>
+            <Delete src={trash} onClick={() => removeTask(item)}></Delete>
         </Container>
     )
 }

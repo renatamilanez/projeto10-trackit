@@ -15,9 +15,24 @@ export default function App(){
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [image, setImage] = useState('');
+    const [title, setTitle] = useState('');
+    const [addButton, setAddButton] = useState(false);
+    const [listHabits, setListHabits] = useState(null);
+    const [reloadHabits, setReloadHabits]=useState(false)
+    let token = localStorage.getItem('userToken');
+    const habit = {
+        name: title,
+        days: []
+    }
+    
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    }
 
     const contextValue = {
-        email, setEmail, password, setPassword, name, setName, image, setImage
+        email, setEmail, password, setPassword, name, setName, image, setImage, title, setTitle, habit, config, addButton, setAddButton, listHabits, setListHabits, reloadHabits, setReloadHabits
     };
 
     return(

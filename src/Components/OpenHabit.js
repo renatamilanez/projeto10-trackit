@@ -1,14 +1,38 @@
 import styled from 'styled-components';
 import WeeklyButtons from './WeeklyButtons';
+import axios from 'axios';
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
 
 export default function OpenHabit(){
+    const {title, setTitle, habit, config, addButton, setAddButton} = useContext(UserContext);
+
+    function handleForm(e){
+        e.preventDefault();
+        setAddButton(false);
+        habit.name = title;
+        if(habit.days.length !== 0 && habit.name !== ''){
+            const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', habit, config);
+            promise.then(res => {
+            })
+        } else {
+            alert('Favor preencher corretamente');
+            setAddButton(true);
+        }
+    }
+
+    function cancelForm(){
+        setAddButton(false);
+
+    }
+
     return(
         <Container>
-            <InputHabit placeholder='nome do hábito' type='text' required/>
+            <InputHabit placeholder='nome do hábito' type='text' required onChange={(e) => setTitle(e.target.value)} value={title}/>
             <WeeklyButtons />
             <Actions>
-                <Cancel>Cancelar</Cancel>
-                <Save>Salvar</Save>
+                <Cancel onClick={cancelForm}>Cancelar</Cancel>
+                <Save onClick={handleForm}>Salvar</Save>
             </Actions>
         </Container>
     )

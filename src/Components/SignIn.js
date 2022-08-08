@@ -7,7 +7,6 @@ import UserContext from '../contexts/UserContext';
 
 export default function SignIn(){
     const {email, setEmail, password, setPassword, name, setName, image, setImage} = useContext(UserContext);
-    
     const navigate = useNavigate();
     let signData = {
         email,
@@ -17,7 +16,6 @@ export default function SignIn(){
       }
 
     function handleForm(e){
-        console.log(signData);
         e.preventDefault();
         const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', signData);
         promise.then(res =>{
